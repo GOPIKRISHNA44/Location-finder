@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html><head>
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+<style>
+
+
+p{
+font-family:cooper;
+font-size:30px;
+
+}
+#googleMap{
+   position:absolute;
+   top:80px;
+   left:750px;
+}</style>
+    
+ </head>
+<body  style="opacity:3.5;background-color: #673ab7;" >
+<h1 align="center" id="h1" class="bg-warning" >Welcome</h1>
+<button id="local" class="btn btn-success">Current Location</button>
+
+
+    
+<div id="googleMap" class="panel-body" style="position: absolute;left:360px;width:700px;height:500px;background-color:white;" hidden></div><!--*For map code this must be compulsory-->
+  
+
+<br /><br /><button id="find" class="btn btn-warning">Find using Latitude and Longitude</button>
+<form name="map"><br><table style="width:15px;" class="table"  bgcolor="wheat" width="5px" hidden>
+<tr class="success"><th bgcolor="white">Latitude:</th><th><input type="number" value="" id="Latitude"></th></tr>
+<tr class="danger"><th>Longitude:</th><th><input type="number"   value="" id="Longitude"></th></tr>
+<tr class="info"><th colspan="2" align="left"><input type="button" value="Find" class="btn btn-success " id="show"/></th></tr></table></form>
+<br><br><p id="info"  class="bg-danger" style="width:300px;background-color:wheat;" ></p>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAlRppOiMlsgy1mP3ZHSYJTk0-2NXt1H0Q">
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js">
+</script>
+<script>
+$("div").hide();
+$("table").hide();
+$(document).ready(function(){
+ $("#find").click(function(){
+ 
+ $("#find").hide(1000);
+ $("table").show(500);
+
+});
+
+  $("#local").click(function(){$("div").hide();
+      $("p").hide();
+      $("table").hide();
+      $("#find").show(2000);
+    $("h1").animate({fontSize:'50',},"slow");
+$("h1").animate({fontSize:'25',},"slow");
+/*GOOGLE MAP MUST COME  INTO DIV TAG*/
+if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);  
+       
+    } 
+    else {/*IF BRowser not supports it comes here*/
+    }
+
+function showPosition(position) {
+Longitude=position.coords.longitude;
+Latitude=position.coords.latitude;
+    /*MAP CODE GOES HERE*/
+    createmap(Latitude,Longitude); 
+    }  
+
+/*CODE END*/
+$("div").show(10);
+document.getElementById("h1").innerHTML="CurrentLocation";
+document.bgColor="skyblue";
+});
+function createmap(Latitude,Longitude){
+
+        var myCenter=new google.maps.LatLng(Latitude,Longitude);
+    var mapProp = {
+  center:myCenter,
+  zoom:5,
+  mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+var marker=new google.maps.Marker({
+  position:myCenter,
+  });
+marker.setMap(map);   
+}
+$("#show").click(function(){
+$("h1").animate({fontSize:'50',},"slow");
+$("h1").animate({fontSize:'25',},"slow");
+document.getElementById("h1").innerHTML="DesiredLocation";
+/*if(document.getElementById("Latitude").length>0&document.getElementById("Longitude").length>0){*/
+createmap(Number(document.getElementById("Latitude").value),Number(document.getElementById("Longitude").value));/*Changed*/
+
+$("div").show();
+document.getElementById("info").innerHTML="Your values <br />Latitude:"+map.Latitude.value+"<br /> Longitude:"+map.Longitude.value;
+$("p").show();
+
+
+
+
+
+});
+
+});
+
+</script>
+</body>
+</html>
